@@ -7,94 +7,666 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg">
 <title>Bufet – Obiady</title>
+
 <style>
-body{font-family:Arial,sans-serif;margin:0;background:#f5f7fb;color:#172033}
-header{background:#2563eb;color:white;padding:18px;text-align:center}
-main{max-width:900px;margin:auto;padding:16px}
-.card{background:white;border-radius:14px;padding:16px;margin:12px 0;box-shadow:0 2px 10px #0001}
-input,textarea,button{width:100%;box-sizing:border-box;padding:11px;margin:6px 0;border-radius:9px;border:1px solid #ccd3df;font-size:16px}
-button{background:#2563eb;color:white;border:0;font-weight:bold}
-.secondary{background:#64748b}.danger{background:#dc2626}
-img{max-width:100%;border-radius:10px}.price{font-size:20px;font-weight:bold}
-.muted{color:#64748b}#admin{display:none}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-@media(max-width:600px){.row{grid-template-columns:1fr}}
+*{box-sizing:border-box}
+
+body{
+  font-family:Arial,sans-serif;
+  margin:0;
+  background:#f5f7fb;
+  color:#172033;
+}
+
+header{
+  background:#2563eb;
+  color:white;
+  padding:20px;
+  text-align:center;
+}
+
+header h1{
+  margin:0 0 6px;
+}
+
+main{
+  max-width:900px;
+  margin:auto;
+  padding:16px;
+}
+
+.card{
+  background:white;
+  border-radius:14px;
+  padding:16px;
+  margin:12px 0;
+  box-shadow:0 2px 10px #0001;
+}
+
+input,textarea,button{
+  width:100%;
+  box-sizing:border-box;
+  padding:11px;
+  margin:6px 0;
+  border-radius:9px;
+  border:1px solid #ccd3df;
+  font-size:16px;
+}
+
+textarea{
+  min-height:90px;
+  resize:vertical;
+}
+
+button{
+  background:#2563eb;
+  color:white;
+  border:0;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+button:hover{
+  opacity:.9;
+}
+
+.secondary{
+  background:#64748b;
+}
+
+.danger{
+  background:#dc2626;
+}
+
+.success{
+  background:#16a34a;
+}
+
+img{
+  max-width:100%;
+  border-radius:10px;
+  margin-top:10px;
+}
+
+.price{
+  font-size:20px;
+  font-weight:bold;
+  color:#2563eb;
+}
+
+.muted{
+  color:#64748b;
+}
+
+#admin{
+  display:none;
+}
+
+#login{
+  display:none;
+}
+
+.row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.meal-date{
+  font-weight:bold;
+  color:#2563eb;
+  margin-bottom:5px;
+}
+
+.allergens{
+  color:#b45309;
+  margin-top:8px;
+}
+
+@media(max-width:600px){
+  .row{
+    grid-template-columns:1fr;
+  }
+}
 </style>
 </head>
+
 <body>
-<header><h1>🍽️ Bufet – Obiady</h1><div>Menu</div></header>
+
+<header>
+  <h1>🍽️ Bufet – Obiady</h1>
+  <div>Menu obiadowe</div>
+</header>
+
 <main>
-<section id="menu"><p class="muted">Ładowanie menu…</p></section>
-<section class="card"><button class="secondary" onclick="showLogin()">Panel administratora</button></section>
-<section id="login" class="card" style="display:none">
-<h2>Logowanie administratora</h2>
-<input id="email" type="email" placeholder="E-mail">
-<input id="password" type="password" placeholder="Hasło">
-<button onclick="login()">Zaloguj</button>
-<button class="secondary" onclick="hideLogin()">Anuluj</button>
-<p id="loginMsg"></p>
-</section>
-<section id="admin" class="card">
-<h2>Panel administratora</h2>
-<button class="secondary" onclick="logout()">Wyloguj</button><hr>
-<h3>Dodaj obiad</h3>
-<div class="row"><input id="date" type="date"><input id="name" placeholder="Nazwa obiadu"></div>
-<div class="row"><input id="price" type="number" step="0.01" placeholder="Cena (zł)"><input id="image" placeholder="Adres zdjęcia (opcjonalnie)"></div>
-<textarea id="description" placeholder="Opis"></textarea>
-<input id="allergens" placeholder="Alergeny, np. gluten, mleko">
-<button onclick="addMeal()">Dodaj obiad</button><p id="adminMsg"></p>
-<div id="adminMeals"></div>
-</section>
+
+  <!-- MENU -->
+  <section id="menu">
+    <p class="muted">Ładowanie menu…</p>
+  </section>
+
+  <!-- PRZYCISK ADMINISTRATORA -->
+  <section class="card">
+    <button class="secondary" onclick="showLogin()">
+      Panel administratora
+    </button>
+  </section>
+
+  <!-- LOGOWANIE -->
+  <section id="login" class="card">
+
+    <h2>🔐 Logowanie administratora</h2>
+
+    <input
+      id="email"
+      type="email"
+      placeholder="E-mail"
+    >
+
+    <input
+      id="password"
+      type="password"
+      placeholder="Hasło"
+    >
+
+    <button onclick="login()">
+      Zaloguj
+    </button>
+
+    <button class="secondary" onclick="hideLogin()">
+      Anuluj
+    </button>
+
+    <p id="loginMsg"></p>
+
+  </section>
+
+  <!-- PANEL ADMINISTRATORA -->
+  <section id="admin" class="card">
+
+    <h2>⚙️ Panel administratora</h2>
+
+    <button class="secondary" onclick="logout()">
+      Wyloguj
+    </button>
+
+    <hr>
+
+    <h3>➕ Dodaj obiad</h3>
+
+    <div class="row">
+
+      <input
+        id="date"
+        type="date"
+      >
+
+      <input
+        id="name"
+        placeholder="Nazwa obiadu"
+      >
+
+    </div>
+
+    <div class="row">
+
+      <input
+        id="price"
+        type="number"
+        step="0.01"
+        placeholder="Cena (zł)"
+      >
+
+      <input
+        id="image"
+        placeholder="Adres zdjęcia (opcjonalnie)"
+      >
+
+    </div>
+
+    <textarea
+      id="description"
+      placeholder="Opis obiadu"
+    ></textarea>
+
+    <input
+      id="allergens"
+      placeholder="Alergeny, np. gluten, mleko"
+    >
+
+    <button onclick="addMeal()">
+      Dodaj obiad
+    </button>
+
+    <p id="adminMsg"></p>
+
+    <h3>📋 Dodane obiady</h3>
+
+    <div id="adminMeals"></div>
+
+  </section>
+
 </main>
+
+<!-- SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
- const SUPABASE_URL="https://xclaiclubwkthyfpdbvo.supabase.co";
-const SUPABASE_KEY=sb_publishable_Ro3KCGc7qqQrvlBPBD3tPw_H1HomM3E
-const ready=!SUPABASE_URL.includes("WSTAW_TUTAJ")&&!SUPABASE_KEY.includes("WSTAW_TUTAJ");
-const db=ready?window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY):null;
-function showLogin(){document.getElementById("login").style.display="block"}
-function hideLogin(){document.getElementById("login").style.display="none"}
-function money(v){return Number(v).toFixed(2).replace(".",",")+" zł"}
-function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",""":"&quot;","'":"&#39;"}[c]))}
-async function loadMeals(){
- const el=document.getElementById("menu");
- if(!ready){el.innerHTML='<div class="card"><b>Aplikacja jest jeszcze w trakcie konfiguracji.</b></div>';return}
- const {data,error}=await db.from("meals").select("*").order("meal_date",{ascending:true});
- if(error){el.innerHTML='<div class="card">Błąd: '+esc(error.message)+"</div>";return}
- if(!data.length){el.innerHTML='<div class="card">Brak dodanych obiadów.</div>';return}
- el.innerHTML=data.map(m=>'<article class="card">'+(m.image_url?'<img src="'+esc(m.image_url)+'">':"")+
- '<h2>'+esc(m.name)+'</h2><div class="price">'+money(m.price)+'</div><p><b>Data:</b> '+esc(m.meal_date)+'</p>'+
- (m.description?"<p>"+esc(m.description)+"</p>":"")+(m.allergens?"<p><b>Alergeny:</b> "+esc(m.allergens)+"</p>":"")+
- "</article>").join("")
+
+const SUPABASE_URL = "https://xclaiclubwkthyfpdbvo.supabase.co";
+
+/*
+  TUTAJ WKLEJ SWÓJ PUBLISHABLE KEY Z SUPABASE.
+  Powinien zaczynać się od:
+  sb_publishable_
+*/
+
+const SUPABASE_KEY = sb_publishable_Ro3KCGc7qqQrvlBPBD3tPw_H1HomM3E;
+
+const db = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+
+/* =========================
+   POMOCNICZE
+========================= */
+
+function esc(value){
+  if(value === null || value === undefined){
+    return "";
+  }
+
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 }
+
+
+/* =========================
+   LOGOWANIE
+========================= */
+
+function showLogin(){
+  document.getElementById("login").style.display = "block";
+  document.getElementById("loginMsg").textContent = "";
+}
+
+function hideLogin(){
+  document.getElementById("login").style.display = "none";
+}
+
 async function login(){
- if(!ready)return;
- const {error}=await db.auth.signInWithPassword({email:document.getElementById("email").value,password:document.getElementById("password").value});
- document.getElementById("loginMsg").textContent=error?error.message:"Zalogowano.";
- if(!error){hideLogin();document.getElementById("admin").style.display="block";loadAdmin()}
+
+  const email =
+    document.getElementById("email").value.trim();
+
+  const password =
+    document.getElementById("password").value;
+
+  const msg =
+    document.getElementById("loginMsg");
+
+  if(!email || !password){
+    msg.textContent = "Wpisz e-mail i hasło.";
+    return;
+  }
+
+  msg.textContent = "Logowanie…";
+
+  const { data, error } =
+    await db.auth.signInWithPassword({
+      email: email,
+      password: password
+    });
+
+  if(error){
+
+    msg.textContent =
+      "Błąd logowania: " + error.message;
+
+    return;
+  }
+
+  msg.textContent = "";
+
+  document.getElementById("login").style.display = "none";
+
+  document.getElementById("admin").style.display = "block";
+
+  await loadAdmin();
 }
-async function logout(){await db.auth.signOut();document.getElementById("admin").style.display="none"}
+
+
+async function logout(){
+
+  await db.auth.signOut();
+
+  document.getElementById("admin").style.display = "none";
+
+  document.getElementById("email").value = "";
+  document.getElementById("password").value = "";
+
+}
+
+
+/* =========================
+   WYŚWIETLANIE MENU
+========================= */
+
+async function loadMeals(){
+
+  const menu =
+    document.getElementById("menu");
+
+  menu.innerHTML =
+    '<p class="muted">Ładowanie menu…</p>';
+
+  const { data, error } =
+    await db
+      .from("meals")
+      .select("*")
+      .order("meal_date", {
+        ascending:true
+      });
+
+  if(error){
+
+    menu.innerHTML =
+      '<div class="card">' +
+      '<b>Nie udało się wczytać menu.</b><br><br>' +
+      esc(error.message) +
+      '</div>';
+
+    return;
+  }
+
+  if(!data || data.length === 0){
+
+    menu.innerHTML =
+      '<div class="card">' +
+      '<p class="muted">Brak dodanych obiadów.</p>' +
+      '</div>';
+
+    return;
+  }
+
+  menu.innerHTML = data.map(function(meal){
+
+    return `
+      <div class="card">
+
+        <div class="meal-date">
+          📅 ${esc(meal.meal_date)}
+        </div>
+
+        <h2>${esc(meal.name)}</h2>
+
+        <div class="price">
+          ${esc(meal.price)} zł
+        </div>
+
+        ${
+          meal.image_url
+          ? `<img src="${esc(meal.image_url)}" alt="${esc(meal.name)}">`
+          : ""
+        }
+
+        ${
+          meal.description
+          ? `<p>${esc(meal.description)}</p>`
+          : ""
+        }
+
+        ${
+          meal.allergens
+          ? `<div class="allergens">
+               ⚠️ Alergeny: ${esc(meal.allergens)}
+             </div>`
+          : ""
+        }
+
+      </div>
+    `;
+
+  }).join("");
+}
+
+
+/* =========================
+   DODAWANIE OBIADU
+========================= */
+
 async function addMeal(){
- const {error}=await db.from("meals").insert({
- meal_date:document.getElementById("date").value,name:document.getElementById("name").value,
- price:Number(document.getElementById("price").value),description:document.getElementById("description").value,
- allergens:document.getElementById("allergens").value,image_url:document.getElementById("image").value});
- document.getElementById("adminMsg").textContent=error?error.message:"Dodano obiad!";
- if(!error){loadMeals();loadAdmin()}
+
+  const date =
+    document.getElementById("date").value;
+
+  const name =
+    document.getElementById("name").value.trim();
+
+  const price =
+    document.getElementById("price").value;
+
+  const image =
+    document.getElementById("image").value.trim();
+
+  const description =
+    document.getElementById("description").value.trim();
+
+  const allergens =
+    document.getElementById("allergens").value.trim();
+
+  const msg =
+    document.getElementById("adminMsg");
+
+
+  if(!date || !name || !price){
+
+    msg.textContent =
+      "Uzupełnij datę, nazwę obiadu i cenę.";
+
+    return;
+  }
+
+
+  msg.textContent =
+    "Dodawanie obiadu…";
+
+
+  const { error } =
+    await db
+      .from("meals")
+      .insert([{
+
+        meal_date: date,
+
+        name: name,
+
+        price: Number(price),
+
+        description:
+          description || null,
+
+        allergens:
+          allergens || null,
+
+        image_url:
+          image || null
+
+      }]);
+
+
+  if(error){
+
+    msg.textContent =
+      "Błąd: " + error.message;
+
+    return;
+  }
+
+
+  msg.textContent =
+    "✅ Obiad został dodany.";
+
+
+  document.getElementById("name").value = "";
+  document.getElementById("price").value = "";
+  document.getElementById("image").value = "";
+  document.getElementById("description").value = "";
+  document.getElementById("allergens").value = "";
+
+
+  await loadMeals();
+  await loadAdmin();
+
 }
+
+
+/* =========================
+   LISTA W PANELU ADMINA
+========================= */
+
 async function loadAdmin(){
- const {data,error}=await db.from("meals").select("*").order("meal_date",{ascending:false});
- const el=document.getElementById("adminMeals");
- if(error){el.textContent=error.message;return}
- el.innerHTML=data.map(m=>'<div class="card"><b>'+esc(m.meal_date)+" – "+esc(m.name)+
- '</b><button class="danger" onclick="deleteMeal('+m.id+')">Usuń</button></div>').join("")
+
+  const el =
+    document.getElementById("adminMeals");
+
+  el.innerHTML =
+    '<p class="muted">Ładowanie…</p>';
+
+
+  const { data, error } =
+    await db
+      .from("meals")
+      .select("*")
+      .order("meal_date", {
+        ascending:false
+      });
+
+
+  if(error){
+
+    el.textContent =
+      error.message;
+
+    return;
+  }
+
+
+  if(!data || data.length === 0){
+
+    el.innerHTML =
+      '<p class="muted">Brak obiadów.</p>';
+
+    return;
+  }
+
+
+  el.innerHTML =
+    data.map(function(meal){
+
+      return `
+        <div class="card">
+
+          <b>
+            ${esc(meal.meal_date)}
+            –
+            ${esc(meal.name)}
+          </b>
+
+          <div>
+            ${esc(meal.price)} zł
+          </div>
+
+          <button
+            class="danger"
+            onclick="deleteMeal(${meal.id})"
+          >
+            Usuń
+          </button>
+
+        </div>
+      `;
+
+    }).join("");
 }
+
+
+/* =========================
+   USUWANIE OBIADU
+========================= */
+
 async function deleteMeal(id){
- if(!confirm("Usunąć ten obiad?"))return;
- const {error}=await db.from("meals").delete().eq("id",id);
- if(error)alert(error.message);else{loadMeals();loadAdmin()}
+
+  if(!confirm("Czy na pewno usunąć ten obiad?")){
+    return;
+  }
+
+
+  const { error } =
+    await db
+      .from("meals")
+      .delete()
+      .eq("id", id);
+
+
+  if(error){
+
+    alert(
+      "Nie udało się usunąć obiadu:\n\n" +
+      error.message
+    );
+
+    return;
+  }
+
+
+  await loadMeals();
+  await loadAdmin();
 }
+
+
+/* =========================
+   SPRAWDZENIE SESJI
+========================= */
+
+async function checkSession(){
+
+  const { data } =
+    await db.auth.getSession();
+
+  if(
+    data &&
+    data.session
+  ){
+
+    document.getElementById("admin").style.display =
+      "block";
+
+    await loadAdmin();
+
+  }else{
+
+    document.getElementById("admin").style.display =
+      "none";
+  }
+}
+
+
+/* =========================
+   START
+========================= */
+
 loadMeals();
+
+checkSession();
+
 </script>
+
 </body>
-</html>
+     </html>
