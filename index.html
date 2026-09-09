@@ -1,4 +1,5 @@
 <!doctype html>
+
 <html lang="pl">
 <head>
 <meta charset="utf-8">
@@ -6,9 +7,7 @@
 <meta name="theme-color" content="#2563eb">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg">
-<title>Bufet – Obiady</title>
-
-<style>
+<title>Bufet – Obiady</title><style>
 *{box-sizing:border-box}
 
 body{
@@ -128,140 +127,109 @@ img{
     grid-template-columns:1fr;
   }
 }
-</style>
-</head>
-
-<body>
-
-<header>
+</style></head><body><header>
   <h1>🍽️ Bufet – Obiady</h1>
   <div>Menu obiadowe</div>
-</header>
-
-<main>
-
-  <!-- MENU -->
-  <section id="menu">
+</header><main>  <!-- MENU -->  <section id="menu">
     <p class="muted">Ładowanie menu…</p>
-  </section>
-
-  <!-- PRZYCISK ADMINISTRATORA -->
-  <section class="card">
+  </section>  <!-- PRZYCISK ADMINISTRATORA -->  <section class="card">
     <button class="secondary" onclick="showLogin()">
       Panel administratora
     </button>
-  </section>
+  </section>  <!-- LOGOWANIE -->  <section id="login" class="card"><h2>🔐 Logowanie administratora</h2>
 
-  <!-- LOGOWANIE -->
-  <section id="login" class="card">
+<input
+  id="email"
+  type="email"
+  placeholder="E-mail"
+>
 
-    <h2>🔐 Logowanie administratora</h2>
+<input
+  id="password"
+  type="password"
+  placeholder="Hasło"
+>
 
-    <input
-      id="email"
-      type="email"
-      placeholder="E-mail"
-    >
+<button onclick="login()">
+  Zaloguj
+</button>
 
-    <input
-      id="password"
-      type="password"
-      placeholder="Hasło"
-    >
+<button class="secondary" onclick="hideLogin()">
+  Anuluj
+</button>
 
-    <button onclick="login()">
-      Zaloguj
-    </button>
+<p id="loginMsg"></p>
 
-    <button class="secondary" onclick="hideLogin()">
-      Anuluj
-    </button>
+  </section>  <!-- PANEL ADMINISTRATORA -->  <section id="admin" class="card"><h2>⚙️ Panel administratora</h2>
 
-    <p id="loginMsg"></p>
+<button class="secondary" onclick="logout()">
+  Wyloguj
+</button>
 
-  </section>
+<hr>
 
-  <!-- PANEL ADMINISTRATORA -->
-  <section id="admin" class="card">
+<h3>➕ Dodaj obiad</h3>
 
-    <h2>⚙️ Panel administratora</h2>
+<div class="row">
 
-    <button class="secondary" onclick="logout()">
-      Wyloguj
-    </button>
+  <input
+    id="date"
+    type="date"
+  >
 
-    <hr>
+  <input
+    id="name"
+    placeholder="Nazwa obiadu"
+  >
 
-    <h3>➕ Dodaj obiad</h3>
+</div>
 
-    <div class="row">
+<div class="row">
 
-      <input
-        id="date"
-        type="date"
-      >
+  <input
+    id="price"
+    type="number"
+    step="0.01"
+    placeholder="Cena (zł)"
+  >
 
-      <input
-        id="name"
-        placeholder="Nazwa obiadu"
-      >
+  <input
+    id="image"
+    placeholder="Adres zdjęcia (opcjonalnie)"
+  >
 
-    </div>
+</div>
 
-    <div class="row">
+<textarea
+  id="description"
+  placeholder="Opis obiadu"
+></textarea>
 
-      <input
-        id="price"
-        type="number"
-        step="0.01"
-        placeholder="Cena (zł)"
-      >
+<input
+  id="allergens"
+  placeholder="Alergeny, np. gluten, mleko"
+>
 
-      <input
-        id="image"
-        placeholder="Adres zdjęcia (opcjonalnie)"
-      >
+<button onclick="addMeal()">
+  Dodaj obiad
+</button>
 
-    </div>
+<p id="adminMsg"></p>
 
-    <textarea
-      id="description"
-      placeholder="Opis obiadu"
-    ></textarea>
+<h3>📋 Dodane obiady</h3>
 
-    <input
-      id="allergens"
-      placeholder="Alergeny, np. gluten, mleko"
-    >
+<div id="adminMeals"></div>
 
-    <button onclick="addMeal()">
-      Dodaj obiad
-    </button>
-
-    <p id="adminMsg"></p>
-
-    <h3>📋 Dodane obiady</h3>
-
-    <div id="adminMeals"></div>
-
-  </section>
-
-</main>
-
-<!-- SUPABASE -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script>
+  </section></main><!-- SUPABASE --><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
 
 const SUPABASE_URL = "https://xclaiclubwkthyfpdbvo.supabase.co";
 
 /*
-  TUTAJ WKLEJ SWÓJ PUBLISHABLE KEY Z SUPABASE.
-  Powinien zaczynać się od:
-  sb_publishable_
+  KLUCZ SUPABASE
+  WAŻNE: klucz musi być w cudzysłowie.
 */
 
-const SUPABASE_KEY = sb_publishable_Ro3KCGc7qqQrvlBPBD3tPw_H1HomM3E;
+const SUPABASE_KEY = "sb_publishable_Ro3KCGc7qqQrvlBPBD3tPw_H1HomM3E";
 
 const db = supabase.createClient(
   SUPABASE_URL,
@@ -274,6 +242,7 @@ const db = supabase.createClient(
 ========================= */
 
 function esc(value){
+
   if(value === null || value === undefined){
     return "";
   }
@@ -292,13 +261,18 @@ function esc(value){
 ========================= */
 
 function showLogin(){
+
   document.getElementById("login").style.display = "block";
+
   document.getElementById("loginMsg").textContent = "";
 }
 
+
 function hideLogin(){
+
   document.getElementById("login").style.display = "none";
 }
+
 
 async function login(){
 
@@ -311,18 +285,29 @@ async function login(){
   const msg =
     document.getElementById("loginMsg");
 
+
   if(!email || !password){
-    msg.textContent = "Wpisz e-mail i hasło.";
+
+    msg.textContent =
+      "Wpisz e-mail i hasło.";
+
     return;
   }
 
-  msg.textContent = "Logowanie…";
+
+  msg.textContent =
+    "Logowanie…";
+
 
   const { data, error } =
     await db.auth.signInWithPassword({
+
       email: email,
+
       password: password
+
     });
+
 
   if(error){
 
@@ -332,11 +317,14 @@ async function login(){
     return;
   }
 
+
   msg.textContent = "";
 
-  document.getElementById("login").style.display = "none";
+  document.getElementById("login").style.display =
+    "none";
 
-  document.getElementById("admin").style.display = "block";
+  document.getElementById("admin").style.display =
+    "block";
 
   await loadAdmin();
 }
@@ -346,11 +334,14 @@ async function logout(){
 
   await db.auth.signOut();
 
-  document.getElementById("admin").style.display = "none";
+  document.getElementById("admin").style.display =
+    "none";
 
-  document.getElementById("email").value = "";
-  document.getElementById("password").value = "";
+  document.getElementById("email").value =
+    "";
 
+  document.getElementById("password").value =
+    "";
 }
 
 
@@ -363,8 +354,10 @@ async function loadMeals(){
   const menu =
     document.getElementById("menu");
 
+
   menu.innerHTML =
     '<p class="muted">Ładowanie menu…</p>';
+
 
   const { data, error } =
     await db
@@ -373,6 +366,7 @@ async function loadMeals(){
       .order("meal_date", {
         ascending:true
       });
+
 
   if(error){
 
@@ -385,6 +379,7 @@ async function loadMeals(){
     return;
   }
 
+
   if(!data || data.length === 0){
 
     menu.innerHTML =
@@ -394,6 +389,7 @@ async function loadMeals(){
 
     return;
   }
+
 
   menu.innerHTML = data.map(function(meal){
 
@@ -515,15 +511,19 @@ async function addMeal(){
 
 
   document.getElementById("name").value = "";
+
   document.getElementById("price").value = "";
+
   document.getElementById("image").value = "";
+
   document.getElementById("description").value = "";
+
   document.getElementById("allergens").value = "";
 
 
   await loadMeals();
-  await loadAdmin();
 
+  await loadAdmin();
 }
 
 
@@ -535,6 +535,7 @@ async function loadAdmin(){
 
   const el =
     document.getElementById("adminMeals");
+
 
   el.innerHTML =
     '<p class="muted">Ładowanie…</p>';
@@ -627,6 +628,7 @@ async function deleteMeal(id){
 
 
   await loadMeals();
+
   await loadAdmin();
 }
 
@@ -639,6 +641,7 @@ async function checkSession(){
 
   const { data } =
     await db.auth.getSession();
+
 
   if(
     data &&
@@ -666,7 +669,5 @@ loadMeals();
 
 checkSession();
 
-</script>
-
-</body>
-     </html>
+</script></body>
+</html>
