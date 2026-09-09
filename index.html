@@ -48,8 +48,8 @@ img{max-width:100%;border-radius:10px}.price{font-size:20px;font-weight:bold}
 </main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SUPABASE_URL="WSTAW_TUTAJ_PROJECT_URL";
-const SUPABASE_KEY="WSTAW_TUTAJ_PUBLISHABLE_KEY";
+ const SUPABASE_URL="https://xclaiclubwkthyfpdbvo.supabase.co";
+const SUPABASE_KEY=sb_publishable_Ro3KCGc7qqQrvlBPBD3tPw_H1HomM3E
 const ready=!SUPABASE_URL.includes("WSTAW_TUTAJ")&&!SUPABASE_KEY.includes("WSTAW_TUTAJ");
 const db=ready?window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY):null;
 function showLogin(){document.getElementById("login").style.display="block"}
