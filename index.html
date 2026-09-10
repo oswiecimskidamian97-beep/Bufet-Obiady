@@ -2,23 +2,14 @@
 <html lang="pl">
 
 <head>
-
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#2563eb">
 
-<meta name="viewport"
-      content="width=device-width,initial-scale=1">
-
-<meta name="theme-color"
-      content="#2563eb">
-
-<link rel="manifest"
-      href="manifest.webmanifest">
-
-<link rel="icon"
-      href="icon.svg">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg">
 
 <title>Bufet – Obiady</title>
-
 
 <style>
 
@@ -26,271 +17,184 @@
   box-sizing:border-box;
 }
 
-
 body{
-
   font-family:Arial,sans-serif;
-
   margin:0;
-
   background:#f5f7fb;
-
   color:#172033;
-
 }
-
 
 header{
-
   background:#2563eb;
-
   color:white;
-
-  padding:22px 16px;
-
+  padding:24px 16px;
   text-align:center;
-
 }
-
 
 header h1{
-
   margin:0 0 6px;
-
-  font-size:28px;
-
+  font-size:30px;
 }
-
 
 header div{
-
   font-size:16px;
-
 }
-
 
 main{
-
-  max-width:900px;
-
+  max-width:850px;
   margin:auto;
-
   padding:16px;
-
 }
 
-
-.today{
-
-  background:#2563eb;
-
-  color:white;
-
-  padding:14px 16px;
-
-  border-radius:12px;
-
-  font-size:21px;
-
-  font-weight:bold;
-
-  margin-bottom:12px;
-
-  text-align:center;
-
-}
-
-
-.card{
-
+.date-title{
   background:white;
-
   border-radius:14px;
-
-  padding:18px;
-
-  margin:12px 0;
-
-  box-shadow:0 2px 10px #0001;
-
-}
-
-
-.meal-number{
-
-  color:#64748b;
-
-  font-size:14px;
-
-  margin-bottom:6px;
-
-}
-
-
-.soup{
-
-  font-size:17px;
-
-  margin-bottom:9px;
-
-}
-
-
-.main-dish{
-
+  padding:16px;
+  text-align:center;
   font-size:22px;
-
   font-weight:bold;
-
-  margin-bottom:9px;
-
+  margin-bottom:18px;
+  box-shadow:0 2px 10px #0001;
 }
 
+.section{
+  margin-bottom:22px;
+}
 
-.addition{
+.section-title{
+  background:#2563eb;
+  color:white;
+  padding:13px 16px;
+  border-radius:12px;
+  font-size:21px;
+  font-weight:bold;
+  margin-bottom:8px;
+}
 
-  color:#475569;
+.item{
+  background:white;
+  padding:15px 16px;
+  margin:7px 0;
+  border-radius:11px;
+  font-size:18px;
+  box-shadow:0 1px 6px #0001;
+}
 
+.price-box{
+  background:white;
+  border-radius:14px;
+  padding:18px;
+  margin-top:28px;
+  box-shadow:0 2px 10px #0001;
+}
+
+.price-title{
+  font-size:21px;
+  font-weight:bold;
   margin-bottom:12px;
-
+  text-align:center;
 }
 
+.price-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px 0;
+  border-bottom:1px solid #e5e7eb;
+  font-size:17px;
+}
+
+.price-row:last-child{
+  border-bottom:0;
+}
 
 .price{
-
-  font-size:21px;
-
   font-weight:bold;
-
   color:#2563eb;
-
+  font-size:19px;
 }
-
 
 .loading{
-
   text-align:center;
-
   padding:30px;
-
   color:#64748b;
-
 }
-
 
 .error{
-
   background:#fee2e2;
-
   color:#991b1b;
-
   padding:16px;
-
   border-radius:12px;
-
   line-height:1.5;
-
 }
-
 
 .empty{
-
   background:white;
-
   border-radius:14px;
-
   padding:28px 20px;
-
   text-align:center;
-
   color:#64748b;
-
   font-size:17px;
-
 }
-
 
 .refresh{
-
   width:100%;
-
   padding:13px;
-
-  margin-top:10px;
-
+  margin-top:15px;
   border:0;
-
   border-radius:10px;
-
   background:#64748b;
-
   color:white;
-
   font-size:16px;
-
   font-weight:bold;
-
 }
-
 
 .updated{
-
   text-align:center;
-
   color:#64748b;
-
   font-size:13px;
-
-  margin-top:15px;
-
+  margin-top:12px;
 }
-
 
 </style>
 
 </head>
 
-
 <body>
-
 
 <header>
 
-  <h1>🍽️ Bufet – Obiady</h1>
+<h1>🍽️ Bufet – Obiady</h1>
 
-  <div>Menu obiadowe</div>
+<div>Menu obiadowe</div>
 
 </header>
 
 
 <main>
 
+<section id="menu">
 
-  <section id="menu">
+<div class="loading">
+⏳ Ładowanie menu…
+</div>
 
-    <div class="loading">
-
-      ⏳ Ładowanie menu…
-
-    </div>
-
-  </section>
+</section>
 
 
-  <button
-    class="refresh"
-    onclick="loadMenu()">
+<button
+class="refresh"
+onclick="loadMenu()">
 
-    🔄 Odśwież menu
+🔄 Odśwież menu
 
-  </button>
+</button>
 
 
-  <div
-    id="updated"
-    class="updated">
-  </div>
-
+<div
+id="updated"
+class="updated">
+</div>
 
 </main>
 
@@ -298,627 +202,444 @@ main{
 <script>
 
 
-/* =====================================================
-   GOOGLE SHEETS
-   ===================================================== */
-
-
 const SHEET_ID =
 "10Dy8W1sR-aZ74gVAgTevIjX28O4VQiD9nIGHz9xF1mM";
 
 
-/* =====================================================
-   NAZWY MIESIĘCY
-   ===================================================== */
-
-
-const monthNames = [
-
-  "stycznia",
-
-  "lutego",
-
-  "marca",
-
-  "kwietnia",
-
-  "maja",
-
-  "czerwca",
-
-  "lipca",
-
-  "sierpnia",
-
-  "września",
-
-  "października",
-
-  "listopada",
-
-  "grudnia"
-
-];
-
-
-/* =====================================================
-   DZISIEJSZA DATA
-   ===================================================== */
-
-
-function getTodayText(){
-
-  const today =
-    new Date();
-
-  return (
-
-    today.getDate() +
-    " " +
-    monthNames[today.getMonth()]
-
-  ).toLowerCase();
-
-}
-
-
-/* =====================================================
-   POBIERANIE MENU
-   ===================================================== */
-
-
 async function loadMenu(){
 
+const menu =
+document.getElementById("menu");
 
-  const menu =
-    document.getElementById("menu");
+const updated =
+document.getElementById("updated");
 
 
-  const updated =
-    document.getElementById("updated");
+menu.innerHTML =
+'<div class="loading">⏳ Ładowanie menu…</div>';
 
 
-  menu.innerHTML =
+try{
 
-    '<div class="loading">' +
 
-    '⏳ Ładowanie menu…' +
+const url =
+"https://docs.google.com/spreadsheets/d/" +
+SHEET_ID +
+"/gviz/tq?tqx=out:json";
 
-    '</div>';
 
+const response =
+await fetch(
+url + "&cache=" + Date.now()
+);
 
-  try{
 
+if(!response.ok){
 
-    const url =
-
-      "https://docs.google.com/spreadsheets/d/" +
-
-      SHEET_ID +
-
-      "/gviz/tq?tqx=out:json";
-
-
-    const response =
-
-      await fetch(
-
-        url +
-
-        "&cache=" +
-
-        Date.now()
-
-      );
-
-
-    if(!response.ok){
-
-      throw new Error(
-
-        "Nie udało się połączyć z Google Sheets."
-
-      );
-
-    }
-
-
-    const text =
-
-      await response.text();
-
-
-    const match =
-
-      text.match(
-
-        /google\.visualization\.Query\.setResponse\(([\s\S]+)\);/
-
-      );
-
-
-    if(!match){
-
-      throw new Error(
-
-        "Nie udało się odczytać danych z arkusza."
-
-      );
-
-    }
-
-
-    const data =
-
-      JSON.parse(match[1]);
-
-
-    if(
-
-      !data.table ||
-
-      !data.table.rows
-
-    ){
-
-      throw new Error(
-
-        "Arkusz nie zawiera danych."
-
-      );
-
-    }
-
-
-    const rows =
-
-      data.table.rows;
-
-
-    /* =================================================
-       ODCZYT DANYCH
-
-       A = Data
-       B = Zupa
-       C = II danie
-       D = Dodatki
-       E = Cena
-       ================================================= */
-
-
-    const meals = [];
-
-
-    rows.forEach(function(row){
-
-
-      const cells =
-
-        row.c || [];
-
-
-      function value(index){
-
-
-        if(
-
-          !cells[index] ||
-
-          cells[index].v === null ||
-
-          cells[index].v === undefined
-
-        ){
-
-          return "";
-
-        }
-
-
-        if(
-
-          cells[index].f !== undefined &&
-
-          cells[index].f !== null
-
-        ){
-
-          return String(
-
-            cells[index].f
-
-          );
-
-        }
-
-
-        return String(
-
-          cells[index].v
-
-        );
-
-      }
-
-
-      const date =
-
-        value(0).trim();
-
-
-      const soup =
-
-        value(1).trim();
-
-
-      const mainDish =
-
-        value(2).trim();
-
-
-      const addition =
-
-        value(3).trim();
-
-
-      const price =
-
-        value(4).trim();
-
-
-      if(
-
-        date ||
-
-        soup ||
-
-        mainDish ||
-
-        addition ||
-
-        price
-
-      ){
-
-        meals.push({
-
-          date:date,
-
-          soup:soup,
-
-          mainDish:mainDish,
-
-          addition:addition,
-
-          price:price
-
-        });
-
-      }
-
-
-    });
-
-
-    /* =================================================
-       POKAZUJEMY TYLKO DZISIEJSZE OBIADY
-       ================================================= */
-
-
-    const todayText =
-
-      getTodayText();
-
-
-    const todayMeals =
-
-      meals.filter(function(meal){
-
-        return (
-
-          meal.date
-
-            .toLowerCase()
-
-            .trim()
-
-          ===
-
-          todayText
-
-        );
-
-      });
-
-
-    /* =================================================
-       BRAK OBIADÓW
-       ================================================= */
-
-
-    if(todayMeals.length === 0){
-
-
-      menu.innerHTML =
-
-        '<div class="empty">' +
-
-        '🍽️ Brak obiadów na dzisiaj.' +
-
-        '<br><br>' +
-
-        '<small>' +
-
-        'Data w arkuszu powinna być wpisana np. ' +
-
-        '<b>' +
-
-        todayText +
-
-        '</b>' +
-
-        '</small>' +
-
-        '</div>';
-
-
-      updated.textContent = "";
-
-      return;
-
-    }
-
-
-    /* =================================================
-       NAGŁÓWEK DZISIAJ
-       ================================================= */
-
-
-    let html =
-
-      '<div class="today">' +
-
-      '📅 Dzisiaj – ' +
-
-      escapeHtml(todayText) +
-
-      '</div>';
-
-
-    /* =================================================
-       WYŚWIETLANIE OBIADÓW
-       ================================================= */
-
-
-    todayMeals.forEach(function(meal,index){
-
-
-      html += `
-
-        <div class="card">
-
-          <div class="meal-number">
-
-            Obiad ${index + 1}
-
-          </div>
-
-
-          ${
-            meal.soup
-
-            ? `
-
-              <div class="soup">
-
-                🥣 <b>Zupa:</b>
-
-                ${escapeHtml(meal.soup)}
-
-              </div>
-
-            `
-
-            : ""
-
-          }
-
-
-          ${
-            meal.mainDish
-
-            ? `
-
-              <div class="main-dish">
-
-                🍗 ${escapeHtml(meal.mainDish)}
-
-              </div>
-
-            `
-
-            : ""
-
-          }
-
-
-          ${
-            meal.addition
-
-            ? `
-
-              <div class="addition">
-
-                🥗 <b>Dodatki:</b>
-
-                ${escapeHtml(meal.addition)}
-
-              </div>
-
-            `
-
-            : ""
-
-          }
-
-
-          ${
-            meal.price
-
-            ? `
-
-              <div class="price">
-
-                💰 ${escapeHtml(meal.price)}
-
-              </div>
-
-            `
-
-            : ""
-
-          }
-
-        </div>
-
-      `;
-
-
-    });
-
-
-    menu.innerHTML =
-
-      html;
-
-
-    /* =================================================
-       CZAS AKTUALIZACJI
-       ================================================= */
-
-
-    const now =
-
-      new Date();
-
-
-    updated.textContent =
-
-      "Ostatnia aktualizacja: " +
-
-      now.toLocaleTimeString(
-
-        "pl-PL",
-
-        {
-
-          hour:"2-digit",
-
-          minute:"2-digit"
-
-        }
-
-      );
-
-
-  }
-
-
-  catch(error){
-
-
-    console.error(error);
-
-
-    menu.innerHTML =
-
-      `
-
-        <div class="error">
-
-          <b>
-
-            ❌ Nie udało się wczytać menu.
-
-          </b>
-
-          <br><br>
-
-          ${escapeHtml(error.message)}
-
-          <br><br>
-
-          Sprawdź, czy arkusz Google Sheets jest
-
-          udostępniony jako:
-
-          <br>
-
-          <b>
-
-          „Każda osoba mająca link – Przeglądający”
-
-          </b>
-
-        </div>
-
-      `;
-
-
-    updated.textContent = "";
-
-
-  }
+throw new Error(
+"Nie udało się połączyć z Google Sheets."
+);
 
 }
 
 
-/* =====================================================
-   ZABEZPIECZENIE TEKSTU
-   ===================================================== */
+const text =
+await response.text();
+
+
+const match =
+text.match(
+/google\.visualization\.Query\.setResponse\(([\s\S]+)\);/
+);
+
+
+if(!match){
+
+throw new Error(
+"Nie udało się odczytać danych z arkusza."
+);
+
+}
+
+
+const data =
+JSON.parse(match[1]);
+
+
+if(
+!data.table ||
+!data.table.rows
+){
+
+throw new Error(
+"Arkusz nie zawiera danych."
+);
+
+}
+
+
+const rows =
+data.table.rows;
+
+
+const meals = [];
+
+
+rows.forEach(function(row){
+
+const cells =
+row.c || [];
+
+
+function value(index){
+
+if(
+!cells[index] ||
+cells[index].v === null ||
+cells[index].v === undefined
+){
+
+return "";
+
+}
+
+
+if(
+cells[index].f !== undefined &&
+cells[index].f !== null
+){
+
+return String(cells[index].f);
+
+}
+
+
+return String(cells[index].v);
+
+}
+
+
+const date =
+value(0).trim();
+
+const type =
+value(1).trim();
+
+const dish =
+value(2).trim();
+
+
+if(date && type && dish){
+
+meals.push({
+
+date:date,
+type:type,
+dish:dish
+
+});
+
+}
+
+});
+
+
+if(meals.length === 0){
+
+menu.innerHTML =
+'<div class="empty">' +
+'🍽️ Brak pozycji w menu.' +
+'</div>';
+
+return;
+
+}
+
+
+/* =========================================
+   BIERZEMY DATĘ PIERWSZEGO MENU
+   ========================================= */
+
+const currentDate =
+meals[0].date;
+
+
+/* =========================================
+   WYBIERAMY POZYCJE Z TEJ DATY
+   ========================================= */
+
+const todayMeals =
+meals.filter(function(meal){
+
+return meal.date === currentDate;
+
+});
+
+
+/* =========================================
+   PODZIAŁ NA KATEGORIE
+   ========================================= */
+
+const soups =
+todayMeals.filter(function(meal){
+
+return meal.type
+.toLowerCase()
+.includes("zup");
+
+});
+
+
+const mains =
+todayMeals.filter(function(meal){
+
+return meal.type
+.toLowerCase()
+.includes("ii");
+
+});
+
+
+const additions =
+todayMeals.filter(function(meal){
+
+return meal.type
+.toLowerCase()
+.includes("dod");
+
+});
+
+
+let html = "";
+
+
+/* =========================================
+   DATA
+   ========================================= */
+
+html +=
+
+'<div class="date-title">' +
+'📅 Menu – ' +
+escapeHtml(currentDate) +
+'</div>';
+
+
+/* =========================================
+   ZUPY
+   ========================================= */
+
+if(soups.length > 0){
+
+html +=
+
+'<section class="section">' +
+
+'<div class="section-title">' +
+'🍲 ZUPY' +
+'</div>';
+
+
+soups.forEach(function(meal){
+
+html +=
+
+'<div class="item">' +
+'🥣 ' +
+escapeHtml(meal.dish) +
+'</div>';
+
+});
+
+
+html += '</section>';
+
+}
+
+
+/* =========================================
+   II DANIA
+   ========================================= */
+
+if(mains.length > 0){
+
+html +=
+
+'<section class="section">' +
+
+'<div class="section-title">' +
+'🍗 II DANIA' +
+'</div>';
+
+
+mains.forEach(function(meal){
+
+html +=
+
+'<div class="item">' +
+'🍽️ ' +
+escapeHtml(meal.dish) +
+'</div>';
+
+});
+
+
+html += '</section>';
+
+}
+
+
+/* =========================================
+   DODATKI
+   ========================================= */
+
+if(additions.length > 0){
+
+html +=
+
+'<section class="section">' +
+
+'<div class="section-title">' +
+'🥗 DODATKI' +
+'</div>';
+
+
+additions.forEach(function(meal){
+
+html +=
+
+'<div class="item">' +
+'🥗 ' +
+escapeHtml(meal.dish) +
+'</div>';
+
+});
+
+
+html += '</section>';
+
+}
+
+
+/* =========================================
+   CENNIK
+   ========================================= */
+
+html +=
+
+'<section class="price-box">' +
+
+'<div class="price-title">' +
+'💰 CENNIK' +
+'</div>' +
+
+
+'<div class="price-row">' +
+
+'<span>🥣 Zupa</span>' +
+
+'<span class="price">8 zł</span>' +
+
+'</div>' +
+
+
+'<div class="price-row">' +
+
+'<span>🍗 II danie</span>' +
+
+'<span class="price">22 zł</span>' +
+
+'</div>' +
+
+
+'<div class="price-row">' +
+
+'<span>🍽️ Zestaw</span>' +
+
+'<span class="price">27 zł</span>' +
+
+'</div>' +
+
+
+'</section>';
+
+
+menu.innerHTML =
+html;
+
+
+const now =
+new Date();
+
+
+updated.textContent =
+"Ostatnia aktualizacja: " +
+
+now.toLocaleTimeString(
+"pl-PL",
+{
+hour:"2-digit",
+minute:"2-digit"
+}
+);
+
+
+}
+catch(error){
+
+
+console.error(error);
+
+
+menu.innerHTML =
+
+'<div class="error">' +
+
+'<b>❌ Nie udało się wczytać menu.</b>' +
+
+'<br><br>' +
+
+escapeHtml(error.message) +
+
+'</div>';
+
+
+}
+
+}
 
 
 function escapeHtml(value){
 
-  return String(value)
+return String(value)
 
-    .replace(/&/g,"&amp;")
+.replace(/&/g,"&amp;")
 
-    .replace(/</g,"&lt;")
+.replace(/</g,"&lt;")
 
-    .replace(/>/g,"&gt;")
+.replace(/>/g,"&gt;")
 
-    .replace(/"/g,"&quot;")
+.replace(/"/g,"&quot;")
 
-    .replace(/'/g,"&#039;");
+.replace(/'/g,"&#039;");
 
 }
 
 
-/* =====================================================
-   START STRONY
-   ===================================================== */
-
+/* START */
 
 loadMenu();
 
 
-/* =====================================================
-   AUTOMATYCZNE ODŚWIEŻANIE CO 60 SEKUND
-   ===================================================== */
-
+/* AUTOMATYCZNE ODŚWIEŻANIE */
 
 setInterval(
-
-  loadMenu,
-
-  60000
-
+loadMenu,
+60000
 );
 
 
 </script>
-
 
 </body>
 
