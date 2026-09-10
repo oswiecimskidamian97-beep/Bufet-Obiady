@@ -1,14 +1,19 @@
 <!doctype html>
-
 <html lang="pl">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#2563eb">
+
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg">
-<title>Bufet – Obiady</title><style>
-*{box-sizing:border-box}
+
+<title>Bufet – Obiady</title>
+
+<style>
+*{
+  box-sizing:border-box;
+}
 
 body{
   font-family:Arial,sans-serif;
@@ -20,12 +25,17 @@ body{
 header{
   background:#2563eb;
   color:white;
-  padding:20px;
+  padding:22px 16px;
   text-align:center;
 }
 
 header h1{
   margin:0 0 6px;
+  font-size:28px;
+}
+
+header div{
+  font-size:16px;
 }
 
 main{
@@ -34,57 +44,48 @@ main{
   padding:16px;
 }
 
+.day{
+  margin-bottom:24px;
+}
+
+.day-title{
+  background:#2563eb;
+  color:white;
+  padding:12px 16px;
+  border-radius:12px;
+  font-size:20px;
+  font-weight:bold;
+  margin-bottom:10px;
+}
+
 .card{
   background:white;
   border-radius:14px;
   padding:16px;
-  margin:12px 0;
+  margin:10px 0;
   box-shadow:0 2px 10px #0001;
 }
 
-input,textarea,button{
-  width:100%;
-  box-sizing:border-box;
-  padding:11px;
-  margin:6px 0;
-  border-radius:9px;
-  border:1px solid #ccd3df;
-  font-size:16px;
+.meal-number{
+  color:#64748b;
+  font-size:14px;
+  margin-bottom:5px;
 }
 
-textarea{
-  min-height:90px;
-  resize:vertical;
+.soup{
+  font-size:17px;
+  margin-bottom:8px;
 }
 
-button{
-  background:#2563eb;
-  color:white;
-  border:0;
+.main-dish{
+  font-size:21px;
   font-weight:bold;
-  cursor:pointer;
+  margin-bottom:8px;
 }
 
-button:hover{
-  opacity:.9;
-}
-
-.secondary{
-  background:#64748b;
-}
-
-.danger{
-  background:#dc2626;
-}
-
-.success{
-  background:#16a34a;
-}
-
-img{
-  max-width:100%;
-  border-radius:10px;
-  margin-top:10px;
+.addition{
+  color:#475569;
+  margin-bottom:10px;
 }
 
 .price{
@@ -93,159 +94,392 @@ img{
   color:#2563eb;
 }
 
-.muted{
+.loading{
+  text-align:center;
+  padding:30px;
   color:#64748b;
 }
 
-#admin{
-  display:none;
+.error{
+  background:#fee2e2;
+  color:#991b1b;
+  padding:16px;
+  border-radius:12px;
 }
 
-#login{
-  display:none;
+.empty{
+  background:white;
+  border-radius:14px;
+  padding:25px;
+  text-align:center;
+  color:#64748b;
 }
 
-.row{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-
-.meal-date{
+.refresh{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border:0;
+  border-radius:10px;
+  background:#64748b;
+  color:white;
+  font-size:16px;
   font-weight:bold;
-  color:#2563eb;
-  margin-bottom:5px;
 }
 
-.allergens{
-  color:#b45309;
-  margin-top:8px;
+.updated{
+  text-align:center;
+  color:#64748b;
+  font-size:13px;
+  margin-top:15px;
 }
+</style>
+</head>
 
-@media(max-width:600px){
-  .row{
-    grid-template-columns:1fr;
-  }
-}
-</style></head><body><header>
+<body>
+
+<header>
   <h1>🍽️ Bufet – Obiady</h1>
   <div>Menu obiadowe</div>
-</header><main>  <!-- MENU -->  <section id="menu">
-    <p class="muted">Ładowanie menu…</p>
-  </section>  <!-- PRZYCISK ADMINISTRATORA -->  <section class="card">
-    <button class="secondary" onclick="showLogin()">
-      Panel administratora
-    </button>
-  </section>  <!-- LOGOWANIE -->  <section id="login" class="card"><h2>🔐 Logowanie administratora</h2>
+</header>
 
-<input
-  id="email"
-  type="email"
-  placeholder="E-mail"
->
+<main>
 
-<input
-  id="password"
-  type="password"
-  placeholder="Hasło"
->
+  <section id="menu">
+    <div class="loading">
+      ⏳ Ładowanie menu…
+    </div>
+  </section>
 
-<button onclick="login()">
-  Zaloguj
-</button>
+  <button class="refresh" onclick="loadMenu()">
+    🔄 Odśwież menu
+  </button>
 
-<button class="secondary" onclick="hideLogin()">
-  Anuluj
-</button>
+  <div id="updated" class="updated"></div>
 
-<p id="loginMsg"></p>
+</main>
 
-  </section>  <!-- PANEL ADMINISTRATORA -->  <section id="admin" class="card"><h2>⚙️ Panel administratora</h2>
+<script>
 
-<button class="secondary" onclick="logout()">
-  Wyloguj
-</button>
+/* =====================================================
+   GOOGLE SHEETS
+   ===================================================== */
 
-<hr>
-
-<h3>➕ Dodaj obiad</h3>
-
-<div class="row">
-
-  <input
-    id="date"
-    type="date"
-  >
-
-  <input
-    id="name"
-    placeholder="Nazwa obiadu"
-  >
-
-</div>
-
-<div class="row">
-
-  <input
-    id="price"
-    type="number"
-    step="0.01"
-    placeholder="Cena (zł)"
-  >
-
-  <input
-    id="image"
-    placeholder="Adres zdjęcia (opcjonalnie)"
-  >
-
-</div>
-
-<textarea
-  id="description"
-  placeholder="Opis obiadu"
-></textarea>
-
-<input
-  id="allergens"
-  placeholder="Alergeny, np. gluten, mleko"
->
-
-<button onclick="addMeal()">
-  Dodaj obiad
-</button>
-
-<p id="adminMsg"></p>
-
-<h3>📋 Dodane obiady</h3>
-
-<div id="adminMeals"></div>
-
-  </section></main><!-- SUPABASE --><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
-
-const SUPABASE_URL = "https://xclaiclubwkthyfpdbvo.supabase.co";
-
-/*
-  KLUCZ SUPABASE
-  WAŻNE: klucz musi być w cudzysłowie.
-*/
-
-const SUPABASE_KEY = "sb_publishable_Ro3KCGc7qqQrvlBPBD3tPw_H1HomM3E";
-
-const db = supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+const SHEET_ID =
+"10Dy8W1sR-aZ74gVAgTevIjX28O4VQiD9nIGHz9xF1mM";
 
 
-/* =========================
-   POMOCNICZE
-========================= */
+/* =====================================================
+   POBIERANIE DANYCH Z GOOGLE SHEETS
+   ===================================================== */
 
-function esc(value){
+async function loadMenu(){
 
-  if(value === null || value === undefined){
-    return "";
+  const menu =
+    document.getElementById("menu");
+
+  const updated =
+    document.getElementById("updated");
+
+  menu.innerHTML =
+    '<div class="loading">⏳ Ładowanie menu…</div>';
+
+  try{
+
+    const url =
+      "https://docs.google.com/spreadsheets/d/" +
+      SHEET_ID +
+      "/gviz/tq?tqx=out:json";
+
+    const response =
+      await fetch(
+        url + "&cache=" + Date.now()
+      );
+
+    if(!response.ok){
+      throw new Error(
+        "Nie udało się połączyć z Google Sheets."
+      );
+    }
+
+    const text =
+      await response.text();
+
+
+    /* Google zwraca dane w specjalnym formacie */
+    const match =
+      text.match(
+        /google\.visualization\.Query\.setResponse\(([\s\S]+)\);/
+      );
+
+
+    if(!match){
+
+      throw new Error(
+        "Nie udało się odczytać danych z arkusza."
+      );
+    }
+
+
+    const data =
+      JSON.parse(match[1]);
+
+
+    if(
+      !data.table ||
+      !data.table.rows
+    ){
+
+      throw new Error(
+        "Arkusz nie zawiera danych."
+      );
+    }
+
+
+    const rows =
+      data.table.rows;
+
+
+    /* ================================================
+       ODCZYT WIERSZY
+       A = Data
+       B = Zupa
+       C = II danie
+       D = Dodatki
+       E = Cena
+       ================================================ */
+
+    const meals = [];
+
+
+    rows.forEach(function(row){
+
+      const cells =
+        row.c || [];
+
+
+      function value(index){
+
+        if(
+          !cells[index] ||
+          cells[index].v === null ||
+          cells[index].v === undefined
+        ){
+          return "";
+        }
+
+        if(
+          cells[index].f !== undefined &&
+          cells[index].f !== null
+        ){
+          return String(cells[index].f);
+        }
+
+        return String(cells[index].v);
+      }
+
+
+      const date =
+        value(0);
+
+      const soup =
+        value(1);
+
+      const mainDish =
+        value(2);
+
+      const addition =
+        value(3);
+
+      const price =
+        value(4);
+
+
+      if(
+        date ||
+        soup ||
+        mainDish ||
+        addition ||
+        price
+      ){
+
+        meals.push({
+          date:date,
+          soup:soup,
+          mainDish:mainDish,
+          addition:addition,
+          price:price
+        });
+
+      }
+
+    });
+
+
+    if(meals.length === 0){
+
+      menu.innerHTML =
+        '<div class="empty">' +
+        '🍽️ Brak obiadów w menu.' +
+        '</div>';
+
+      updated.textContent = "";
+
+      return;
+    }
+
+
+    /* ================================================
+       GRUPOWANIE OBIADÓW WEDŁUG DATY
+       ================================================ */
+
+    const days = {};
+
+
+    meals.forEach(function(meal){
+
+      if(!days[meal.date]){
+        days[meal.date] = [];
+      }
+
+      days[meal.date].push(meal);
+
+    });
+
+
+    let html = "";
+
+
+    Object.keys(days).forEach(function(date){
+
+      html += `
+        <section class="day">
+
+          <div class="day-title">
+            📅 ${escapeHtml(date)}
+          </div>
+      `;
+
+
+      days[date].forEach(function(meal,index){
+
+        html += `
+          <div class="card">
+
+            <div class="meal-number">
+              Obiad ${index + 1}
+            </div>
+
+            ${
+              meal.soup
+              ? `
+                <div class="soup">
+                  🥣 <b>Zupa:</b>
+                  ${escapeHtml(meal.soup)}
+                </div>
+              `
+              : ""
+            }
+
+            ${
+              meal.mainDish
+              ? `
+                <div class="main-dish">
+                  🍗 ${escapeHtml(meal.mainDish)}
+                </div>
+              `
+              : ""
+            }
+
+            ${
+              meal.addition
+              ? `
+                <div class="addition">
+                  🥗 <b>Dodatki:</b>
+                  ${escapeHtml(meal.addition)}
+                </div>
+              `
+              : ""
+            }
+
+            ${
+              meal.price
+              ? `
+                <div class="price">
+                  💰 ${escapeHtml(meal.price)}
+                </div>
+              `
+              : ""
+            }
+
+          </div>
+        `;
+
+      });
+
+
+      html += `
+        </section>
+      `;
+
+    });
+
+
+    menu.innerHTML =
+      html;
+
+
+    const now =
+      new Date();
+
+
+    updated.textContent =
+      "Ostatnia aktualizacja: " +
+      now.toLocaleTimeString(
+        "pl-PL",
+        {
+          hour:"2-digit",
+          minute:"2-digit"
+        }
+      );
+
+
+  }catch(error){
+
+    console.error(error);
+
+
+    menu.innerHTML =
+      `
+        <div class="error">
+
+          <b>❌ Nie udało się wczytać menu.</b>
+
+          <br><br>
+
+          ${escapeHtml(error.message)}
+
+          <br><br>
+
+          Sprawdź, czy arkusz Google Sheets
+          jest udostępniony jako
+          „Każda osoba mająca link – Przeglądający”.
+
+        </div>
+      `;
+
+    updated.textContent = "";
+
   }
+
+}
+
+
+/* =====================================================
+   ZABEZPIECZENIE TEKSTU
+   ===================================================== */
+
+function escapeHtml(value){
 
   return String(value)
     .replace(/&/g,"&amp;")
@@ -253,421 +487,25 @@ function esc(value){
     .replace(/>/g,"&gt;")
     .replace(/"/g,"&quot;")
     .replace(/'/g,"&#039;");
+
 }
 
 
-/* =========================
-   LOGOWANIE
-========================= */
-
-function showLogin(){
-
-  document.getElementById("login").style.display = "block";
-
-  document.getElementById("loginMsg").textContent = "";
-}
-
-
-function hideLogin(){
-
-  document.getElementById("login").style.display = "none";
-}
-
-
-async function login(){
-
-  const email =
-    document.getElementById("email").value.trim();
-
-  const password =
-    document.getElementById("password").value;
-
-  const msg =
-    document.getElementById("loginMsg");
-
-
-  if(!email || !password){
-
-    msg.textContent =
-      "Wpisz e-mail i hasło.";
-
-    return;
-  }
-
-
-  msg.textContent =
-    "Logowanie…";
-
-
-  const { data, error } =
-    await db.auth.signInWithPassword({
-
-      email: email,
-
-      password: password
-
-    });
-
-
-  if(error){
-
-    msg.textContent =
-      "Błąd logowania: " + error.message;
-
-    return;
-  }
-
-
-  msg.textContent = "";
-
-  document.getElementById("login").style.display =
-    "none";
-
-  document.getElementById("admin").style.display =
-    "block";
-
-  await loadAdmin();
-}
-
-
-async function logout(){
-
-  await db.auth.signOut();
-
-  document.getElementById("admin").style.display =
-    "none";
-
-  document.getElementById("email").value =
-    "";
-
-  document.getElementById("password").value =
-    "";
-}
-
-
-/* =========================
-   WYŚWIETLANIE MENU
-========================= */
-
-async function loadMeals(){
-
-  const menu =
-    document.getElementById("menu");
-
-
-  menu.innerHTML =
-    '<p class="muted">Ładowanie menu…</p>';
-
-
-  const { data, error } =
-    await db
-      .from("meals")
-      .select("*")
-      .order("meal_date", {
-        ascending:true
-      });
-
-
-  if(error){
-
-    menu.innerHTML =
-      '<div class="card">' +
-      '<b>Nie udało się wczytać menu.</b><br><br>' +
-      esc(error.message) +
-      '</div>';
-
-    return;
-  }
-
-
-  if(!data || data.length === 0){
-
-    menu.innerHTML =
-      '<div class="card">' +
-      '<p class="muted">Brak dodanych obiadów.</p>' +
-      '</div>';
-
-    return;
-  }
-
-
-  menu.innerHTML = data.map(function(meal){
-
-    return `
-      <div class="card">
-
-        <div class="meal-date">
-          📅 ${esc(meal.meal_date)}
-        </div>
-
-        <h2>${esc(meal.name)}</h2>
-
-        <div class="price">
-          ${esc(meal.price)} zł
-        </div>
-
-        ${
-          meal.image_url
-          ? `<img src="${esc(meal.image_url)}" alt="${esc(meal.name)}">`
-          : ""
-        }
-
-        ${
-          meal.description
-          ? `<p>${esc(meal.description)}</p>`
-          : ""
-        }
-
-        ${
-          meal.allergens
-          ? `<div class="allergens">
-               ⚠️ Alergeny: ${esc(meal.allergens)}
-             </div>`
-          : ""
-        }
-
-      </div>
-    `;
-
-  }).join("");
-}
-
-
-/* =========================
-   DODAWANIE OBIADU
-========================= */
-
-async function addMeal(){
-
-  const date =
-    document.getElementById("date").value;
-
-  const name =
-    document.getElementById("name").value.trim();
-
-  const price =
-    document.getElementById("price").value;
-
-  const image =
-    document.getElementById("image").value.trim();
-
-  const description =
-    document.getElementById("description").value.trim();
-
-  const allergens =
-    document.getElementById("allergens").value.trim();
-
-  const msg =
-    document.getElementById("adminMsg");
-
-
-  if(!date || !name || !price){
-
-    msg.textContent =
-      "Uzupełnij datę, nazwę obiadu i cenę.";
-
-    return;
-  }
-
-
-  msg.textContent =
-    "Dodawanie obiadu…";
-
-
-  const { error } =
-    await db
-      .from("meals")
-      .insert([{
-
-        meal_date: date,
-
-        name: name,
-
-        price: Number(price),
-
-        description:
-          description || null,
-
-        allergens:
-          allergens || null,
-
-        image_url:
-          image || null
-
-      }]);
-
-
-  if(error){
-
-    msg.textContent =
-      "Błąd: " + error.message;
-
-    return;
-  }
-
-
-  msg.textContent =
-    "✅ Obiad został dodany.";
-
-
-  document.getElementById("name").value = "";
-
-  document.getElementById("price").value = "";
-
-  document.getElementById("image").value = "";
-
-  document.getElementById("description").value = "";
-
-  document.getElementById("allergens").value = "";
-
-
-  await loadMeals();
-
-  await loadAdmin();
-}
-
-
-/* =========================
-   LISTA W PANELU ADMINA
-========================= */
-
-async function loadAdmin(){
-
-  const el =
-    document.getElementById("adminMeals");
-
-
-  el.innerHTML =
-    '<p class="muted">Ładowanie…</p>';
-
-
-  const { data, error } =
-    await db
-      .from("meals")
-      .select("*")
-      .order("meal_date", {
-        ascending:false
-      });
-
-
-  if(error){
-
-    el.textContent =
-      error.message;
-
-    return;
-  }
-
-
-  if(!data || data.length === 0){
-
-    el.innerHTML =
-      '<p class="muted">Brak obiadów.</p>';
-
-    return;
-  }
-
-
-  el.innerHTML =
-    data.map(function(meal){
-
-      return `
-        <div class="card">
-
-          <b>
-            ${esc(meal.meal_date)}
-            –
-            ${esc(meal.name)}
-          </b>
-
-          <div>
-            ${esc(meal.price)} zł
-          </div>
-
-          <button
-            class="danger"
-            onclick="deleteMeal(${meal.id})"
-          >
-            Usuń
-          </button>
-
-        </div>
-      `;
-
-    }).join("");
-}
-
-
-/* =========================
-   USUWANIE OBIADU
-========================= */
-
-async function deleteMeal(id){
-
-  if(!confirm("Czy na pewno usunąć ten obiad?")){
-    return;
-  }
-
-
-  const { error } =
-    await db
-      .from("meals")
-      .delete()
-      .eq("id", id);
-
-
-  if(error){
-
-    alert(
-      "Nie udało się usunąć obiadu:\n\n" +
-      error.message
-    );
-
-    return;
-  }
-
-
-  await loadMeals();
-
-  await loadAdmin();
-}
-
-
-/* =========================
-   SPRAWDZENIE SESJI
-========================= */
-
-async function checkSession(){
-
-  const { data } =
-    await db.auth.getSession();
-
-
-  if(
-    data &&
-    data.session
-  ){
-
-    document.getElementById("admin").style.display =
-      "block";
-
-    await loadAdmin();
-
-  }else{
-
-    document.getElementById("admin").style.display =
-      "none";
-  }
-}
-
-
-/* =========================
+/* =====================================================
    START
-========================= */
+   ===================================================== */
 
-loadMeals();
+loadMenu();
 
-checkSession();
 
-</script></body>
+/* Automatyczne odświeżanie co 60 sekund */
+
+setInterval(
+  loadMenu,
+  60000
+);
+
+</script>
+
+</body>
 </html>
