@@ -1,459 +1,846 @@
 <!doctype html>
 <html lang="pl">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#2563eb">
 
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="icon.svg">
+<head>
+
+<meta charset="utf-8">
+
+<meta name="viewport"
+      content="width=device-width,initial-scale=1">
+
+<meta name="theme-color"
+      content="#2563eb">
+
+<link rel="manifest"
+      href="manifest.webmanifest">
+
+<link rel="icon"
+      href="icon.svg">
 
 <title>Bufet – Obiady</title>
 
+
 <style>
+
 *{
   box-sizing:border-box;
 }
 
+
 body{
+
   font-family:Arial,sans-serif;
+
   margin:0;
+
   background:#f5f7fb;
+
   color:#172033;
+
 }
+
 
 header{
+
   background:#2563eb;
+
   color:white;
+
   padding:22px 16px;
+
   text-align:center;
+
 }
+
 
 header h1{
+
   margin:0 0 6px;
+
   font-size:28px;
+
 }
+
 
 header div{
+
   font-size:16px;
+
 }
+
 
 main{
+
   max-width:900px;
+
   margin:auto;
+
   padding:16px;
+
 }
 
-.day{
-  margin-bottom:24px;
-}
 
-.day-title{
+.today{
+
   background:#2563eb;
+
   color:white;
-  padding:12px 16px;
+
+  padding:14px 16px;
+
   border-radius:12px;
-  font-size:20px;
+
+  font-size:21px;
+
   font-weight:bold;
-  margin-bottom:10px;
+
+  margin-bottom:12px;
+
+  text-align:center;
+
 }
+
 
 .card{
+
   background:white;
+
   border-radius:14px;
-  padding:16px;
-  margin:10px 0;
+
+  padding:18px;
+
+  margin:12px 0;
+
   box-shadow:0 2px 10px #0001;
+
 }
+
 
 .meal-number{
+
   color:#64748b;
+
   font-size:14px;
-  margin-bottom:5px;
+
+  margin-bottom:6px;
+
 }
+
 
 .soup{
+
   font-size:17px;
-  margin-bottom:8px;
+
+  margin-bottom:9px;
+
 }
+
 
 .main-dish{
-  font-size:21px;
+
+  font-size:22px;
+
   font-weight:bold;
-  margin-bottom:8px;
+
+  margin-bottom:9px;
+
 }
+
 
 .addition{
+
   color:#475569;
-  margin-bottom:10px;
+
+  margin-bottom:12px;
+
 }
+
 
 .price{
-  font-size:20px;
+
+  font-size:21px;
+
   font-weight:bold;
+
   color:#2563eb;
+
 }
+
 
 .loading{
+
   text-align:center;
+
   padding:30px;
+
   color:#64748b;
+
 }
+
 
 .error{
+
   background:#fee2e2;
+
   color:#991b1b;
+
   padding:16px;
+
   border-radius:12px;
+
+  line-height:1.5;
+
 }
+
 
 .empty{
+
   background:white;
+
   border-radius:14px;
-  padding:25px;
+
+  padding:28px 20px;
+
   text-align:center;
+
   color:#64748b;
+
+  font-size:17px;
+
 }
+
 
 .refresh{
+
   width:100%;
-  padding:12px;
+
+  padding:13px;
+
   margin-top:10px;
+
   border:0;
+
   border-radius:10px;
+
   background:#64748b;
+
   color:white;
+
   font-size:16px;
+
   font-weight:bold;
+
 }
 
+
 .updated{
+
   text-align:center;
+
   color:#64748b;
+
   font-size:13px;
+
   margin-top:15px;
+
 }
+
+
 </style>
+
 </head>
+
 
 <body>
 
+
 <header>
+
   <h1>🍽️ Bufet – Obiady</h1>
+
   <div>Menu obiadowe</div>
+
 </header>
+
 
 <main>
 
+
   <section id="menu">
+
     <div class="loading">
+
       ⏳ Ładowanie menu…
+
     </div>
+
   </section>
 
-  <button class="refresh" onclick="loadMenu()">
+
+  <button
+    class="refresh"
+    onclick="loadMenu()">
+
     🔄 Odśwież menu
+
   </button>
 
-  <div id="updated" class="updated"></div>
+
+  <div
+    id="updated"
+    class="updated">
+  </div>
+
 
 </main>
 
+
 <script>
+
 
 /* =====================================================
    GOOGLE SHEETS
    ===================================================== */
+
 
 const SHEET_ID =
 "10Dy8W1sR-aZ74gVAgTevIjX28O4VQiD9nIGHz9xF1mM";
 
 
 /* =====================================================
-   POBIERANIE DANYCH Z GOOGLE SHEETS
+   NAZWY MIESIĘCY
    ===================================================== */
 
+
+const monthNames = [
+
+  "stycznia",
+
+  "lutego",
+
+  "marca",
+
+  "kwietnia",
+
+  "maja",
+
+  "czerwca",
+
+  "lipca",
+
+  "sierpnia",
+
+  "września",
+
+  "października",
+
+  "listopada",
+
+  "grudnia"
+
+];
+
+
+/* =====================================================
+   DZISIEJSZA DATA
+   ===================================================== */
+
+
+function getTodayText(){
+
+  const today =
+    new Date();
+
+  return (
+
+    today.getDate() +
+    " " +
+    monthNames[today.getMonth()]
+
+  ).toLowerCase();
+
+}
+
+
+/* =====================================================
+   POBIERANIE MENU
+   ===================================================== */
+
+
 async function loadMenu(){
+
 
   const menu =
     document.getElementById("menu");
 
+
   const updated =
     document.getElementById("updated");
 
+
   menu.innerHTML =
-    '<div class="loading">⏳ Ładowanie menu…</div>';
+
+    '<div class="loading">' +
+
+    '⏳ Ładowanie menu…' +
+
+    '</div>';
+
 
   try{
 
+
     const url =
+
       "https://docs.google.com/spreadsheets/d/" +
+
       SHEET_ID +
+
       "/gviz/tq?tqx=out:json";
 
+
     const response =
+
       await fetch(
-        url + "&cache=" + Date.now()
+
+        url +
+
+        "&cache=" +
+
+        Date.now()
+
       );
+
 
     if(!response.ok){
+
       throw new Error(
+
         "Nie udało się połączyć z Google Sheets."
+
       );
+
     }
 
+
     const text =
+
       await response.text();
 
 
-    /* Google zwraca dane w specjalnym formacie */
     const match =
+
       text.match(
+
         /google\.visualization\.Query\.setResponse\(([\s\S]+)\);/
+
       );
 
 
     if(!match){
 
       throw new Error(
+
         "Nie udało się odczytać danych z arkusza."
+
       );
+
     }
 
 
     const data =
+
       JSON.parse(match[1]);
 
 
     if(
+
       !data.table ||
+
       !data.table.rows
+
     ){
 
       throw new Error(
+
         "Arkusz nie zawiera danych."
+
       );
+
     }
 
 
     const rows =
+
       data.table.rows;
 
 
-    /* ================================================
-       ODCZYT WIERSZY
+    /* =================================================
+       ODCZYT DANYCH
+
        A = Data
        B = Zupa
        C = II danie
        D = Dodatki
        E = Cena
-       ================================================ */
+       ================================================= */
+
 
     const meals = [];
 
 
     rows.forEach(function(row){
 
+
       const cells =
+
         row.c || [];
 
 
       function value(index){
 
+
         if(
+
           !cells[index] ||
+
           cells[index].v === null ||
+
           cells[index].v === undefined
+
         ){
+
           return "";
+
         }
+
 
         if(
+
           cells[index].f !== undefined &&
+
           cells[index].f !== null
+
         ){
-          return String(cells[index].f);
+
+          return String(
+
+            cells[index].f
+
+          );
+
         }
 
-        return String(cells[index].v);
+
+        return String(
+
+          cells[index].v
+
+        );
+
       }
 
 
       const date =
-        value(0);
+
+        value(0).trim();
+
 
       const soup =
-        value(1);
+
+        value(1).trim();
+
 
       const mainDish =
-        value(2);
+
+        value(2).trim();
+
 
       const addition =
-        value(3);
+
+        value(3).trim();
+
 
       const price =
-        value(4);
+
+        value(4).trim();
 
 
       if(
+
         date ||
+
         soup ||
+
         mainDish ||
+
         addition ||
+
         price
+
       ){
 
         meals.push({
+
           date:date,
+
           soup:soup,
+
           mainDish:mainDish,
+
           addition:addition,
+
           price:price
+
         });
 
       }
 
-    });
-
-
-    if(meals.length === 0){
-
-      menu.innerHTML =
-        '<div class="empty">' +
-        '🍽️ Brak obiadów w menu.' +
-        '</div>';
-
-      updated.textContent = "";
-
-      return;
-    }
-
-
-    /* ================================================
-       GRUPOWANIE OBIADÓW WEDŁUG DATY
-       ================================================ */
-
-    const days = {};
-
-
-    meals.forEach(function(meal){
-
-      if(!days[meal.date]){
-        days[meal.date] = [];
-      }
-
-      days[meal.date].push(meal);
 
     });
 
 
-    let html = "";
+    /* =================================================
+       POKAZUJEMY TYLKO DZISIEJSZE OBIADY
+       ================================================= */
 
 
-    Object.keys(days).forEach(function(date){
+    const todayText =
 
-      html += `
-        <section class="day">
-
-          <div class="day-title">
-            📅 ${escapeHtml(date)}
-          </div>
-      `;
+      getTodayText();
 
 
-      days[date].forEach(function(meal,index){
+    const todayMeals =
 
-        html += `
-          <div class="card">
+      meals.filter(function(meal){
 
-            <div class="meal-number">
-              Obiad ${index + 1}
-            </div>
+        return (
 
-            ${
-              meal.soup
-              ? `
-                <div class="soup">
-                  🥣 <b>Zupa:</b>
-                  ${escapeHtml(meal.soup)}
-                </div>
-              `
-              : ""
-            }
+          meal.date
 
-            ${
-              meal.mainDish
-              ? `
-                <div class="main-dish">
-                  🍗 ${escapeHtml(meal.mainDish)}
-                </div>
-              `
-              : ""
-            }
+            .toLowerCase()
 
-            ${
-              meal.addition
-              ? `
-                <div class="addition">
-                  🥗 <b>Dodatki:</b>
-                  ${escapeHtml(meal.addition)}
-                </div>
-              `
-              : ""
-            }
+            .trim()
 
-            ${
-              meal.price
-              ? `
-                <div class="price">
-                  💰 ${escapeHtml(meal.price)}
-                </div>
-              `
-              : ""
-            }
+          ===
 
-          </div>
-        `;
+          todayText
+
+        );
 
       });
 
 
+    /* =================================================
+       BRAK OBIADÓW
+       ================================================= */
+
+
+    if(todayMeals.length === 0){
+
+
+      menu.innerHTML =
+
+        '<div class="empty">' +
+
+        '🍽️ Brak obiadów na dzisiaj.' +
+
+        '<br><br>' +
+
+        '<small>' +
+
+        'Data w arkuszu powinna być wpisana np. ' +
+
+        '<b>' +
+
+        todayText +
+
+        '</b>' +
+
+        '</small>' +
+
+        '</div>';
+
+
+      updated.textContent = "";
+
+      return;
+
+    }
+
+
+    /* =================================================
+       NAGŁÓWEK DZISIAJ
+       ================================================= */
+
+
+    let html =
+
+      '<div class="today">' +
+
+      '📅 Dzisiaj – ' +
+
+      escapeHtml(todayText) +
+
+      '</div>';
+
+
+    /* =================================================
+       WYŚWIETLANIE OBIADÓW
+       ================================================= */
+
+
+    todayMeals.forEach(function(meal,index){
+
+
       html += `
-        </section>
+
+        <div class="card">
+
+          <div class="meal-number">
+
+            Obiad ${index + 1}
+
+          </div>
+
+
+          ${
+            meal.soup
+
+            ? `
+
+              <div class="soup">
+
+                🥣 <b>Zupa:</b>
+
+                ${escapeHtml(meal.soup)}
+
+              </div>
+
+            `
+
+            : ""
+
+          }
+
+
+          ${
+            meal.mainDish
+
+            ? `
+
+              <div class="main-dish">
+
+                🍗 ${escapeHtml(meal.mainDish)}
+
+              </div>
+
+            `
+
+            : ""
+
+          }
+
+
+          ${
+            meal.addition
+
+            ? `
+
+              <div class="addition">
+
+                🥗 <b>Dodatki:</b>
+
+                ${escapeHtml(meal.addition)}
+
+              </div>
+
+            `
+
+            : ""
+
+          }
+
+
+          ${
+            meal.price
+
+            ? `
+
+              <div class="price">
+
+                💰 ${escapeHtml(meal.price)}
+
+              </div>
+
+            `
+
+            : ""
+
+          }
+
+        </div>
+
       `;
+
 
     });
 
 
     menu.innerHTML =
+
       html;
 
 
+    /* =================================================
+       CZAS AKTUALIZACJI
+       ================================================= */
+
+
     const now =
+
       new Date();
 
 
     updated.textContent =
+
       "Ostatnia aktualizacja: " +
+
       now.toLocaleTimeString(
+
         "pl-PL",
+
         {
+
           hour:"2-digit",
+
           minute:"2-digit"
+
         }
+
       );
 
 
-  }catch(error){
+  }
+
+
+  catch(error){
+
 
     console.error(error);
 
 
     menu.innerHTML =
+
       `
+
         <div class="error">
 
-          <b>❌ Nie udało się wczytać menu.</b>
+          <b>
+
+            ❌ Nie udało się wczytać menu.
+
+          </b>
 
           <br><br>
 
@@ -461,14 +848,25 @@ async function loadMenu(){
 
           <br><br>
 
-          Sprawdź, czy arkusz Google Sheets
-          jest udostępniony jako
-          „Każda osoba mająca link – Przeglądający”.
+          Sprawdź, czy arkusz Google Sheets jest
+
+          udostępniony jako:
+
+          <br>
+
+          <b>
+
+          „Każda osoba mająca link – Przeglądający”
+
+          </b>
 
         </div>
+
       `;
 
+
     updated.textContent = "";
+
 
   }
 
@@ -479,33 +877,49 @@ async function loadMenu(){
    ZABEZPIECZENIE TEKSTU
    ===================================================== */
 
+
 function escapeHtml(value){
 
   return String(value)
+
     .replace(/&/g,"&amp;")
+
     .replace(/</g,"&lt;")
+
     .replace(/>/g,"&gt;")
+
     .replace(/"/g,"&quot;")
+
     .replace(/'/g,"&#039;");
 
 }
 
 
 /* =====================================================
-   START
+   START STRONY
    ===================================================== */
+
 
 loadMenu();
 
 
-/* Automatyczne odświeżanie co 60 sekund */
+/* =====================================================
+   AUTOMATYCZNE ODŚWIEŻANIE CO 60 SEKUND
+   ===================================================== */
+
 
 setInterval(
+
   loadMenu,
+
   60000
+
 );
+
 
 </script>
 
+
 </body>
+
 </html>
