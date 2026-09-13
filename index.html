@@ -2,8 +2,10 @@
 <html lang="pl">
 
 <head>
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+
 <meta name="theme-color" content="#2563eb">
 
 <link rel="manifest" href="manifest.webmanifest">
@@ -18,142 +20,192 @@
 }
 
 body{
-  font-family:Arial,sans-serif;
   margin:0;
+  font-family:Arial,sans-serif;
   background:#f5f7fb;
-  color:#172033;
+  color:#111827;
 }
 
 header{
   background:#2563eb;
   color:white;
-  padding:24px 16px;
   text-align:center;
+  padding:28px 15px 30px;
 }
 
 header h1{
-  margin:0 0 6px;
-  font-size:30px;
+  margin:0;
+  font-size:32px;
+  font-weight:800;
 }
 
 header div{
-  font-size:16px;
+  margin-top:8px;
+  font-size:18px;
 }
 
 main{
-  max-width:850px;
+  max-width:900px;
   margin:auto;
-  padding:16px;
+  padding:20px 16px 30px;
 }
 
 .date-title{
-  background:white;
-  border-radius:14px;
-  padding:16px;
+  background:#eaf2ff;
+  border:3px solid #b9d4ff;
+  border-radius:20px;
+  padding:17px;
   text-align:center;
-  font-size:22px;
-  font-weight:bold;
-  margin-bottom:18px;
-  box-shadow:0 2px 10px #0001;
+  font-size:27px;
+  font-weight:800;
+  color:#101b52;
+  margin-bottom:20px;
 }
 
 .section{
-  margin-bottom:22px;
+  background:white;
+  border-radius:18px;
+  margin-bottom:20px;
+  overflow:hidden;
+  box-shadow:0 2px 10px #0001;
 }
 
 .section-title{
   background:#2563eb;
   color:white;
-  padding:13px 16px;
-  border-radius:12px;
-  font-size:21px;
-  font-weight:bold;
-  margin-bottom:8px;
+  padding:15px 22px;
+  font-size:28px;
+  font-weight:800;
 }
 
 .item{
-  background:white;
-  padding:15px 16px;
-  margin:7px 0;
-  border-radius:11px;
-  font-size:18px;
-  box-shadow:0 1px 6px #0001;
+  margin:0 20px;
+  padding:17px 4px;
+  border-bottom:2px solid #e8edf5;
+  font-size:22px;
+  font-weight:600;
 }
 
-.price-box{
-  background:white;
-  border-radius:14px;
-  padding:18px;
-  margin-top:28px;
-  box-shadow:0 2px 10px #0001;
-}
-
-.price-title{
-  font-size:21px;
-  font-weight:bold;
-  margin-bottom:12px;
-  text-align:center;
-}
-
-.price-row{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:10px 0;
-  border-bottom:1px solid #e5e7eb;
-  font-size:17px;
-}
-
-.price-row:last-child{
+.item:last-child{
   border-bottom:0;
 }
 
-.price{
-  font-weight:bold;
-  color:#2563eb;
-  font-size:19px;
-}
-
 .loading{
-  text-align:center;
+  background:white;
+  border-radius:18px;
   padding:30px;
+  text-align:center;
   color:#64748b;
+  font-size:18px;
 }
 
 .error{
   background:#fee2e2;
   color:#991b1b;
-  padding:16px;
-  border-radius:12px;
+  padding:20px;
+  border-radius:15px;
   line-height:1.5;
 }
 
 .empty{
   background:white;
-  border-radius:14px;
-  padding:28px 20px;
+  border-radius:18px;
+  padding:30px;
   text-align:center;
   color:#64748b;
-  font-size:17px;
+  font-size:18px;
+}
+
+.price-box{
+  background:#eaf2ff;
+  border:3px solid #c7ddff;
+  border-radius:18px;
+  padding:18px 12px;
+  margin-top:28px;
+}
+
+.price-title{
+  text-align:center;
+  font-size:28px;
+  font-weight:800;
+  color:#101b52;
+  margin-bottom:18px;
+}
+
+.prices{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:0;
+}
+
+.price-column{
+  text-align:center;
+  padding:5px 10px;
+  border-right:1px solid #9cc4ff;
+}
+
+.price-column:last-child{
+  border-right:0;
+}
+
+.price-name{
+  font-size:19px;
+  font-weight:700;
+  color:#111827;
+}
+
+.price{
+  margin-top:8px;
+  color:#2563eb;
+  font-size:30px;
+  font-weight:800;
 }
 
 .refresh{
   width:100%;
-  padding:13px;
-  margin-top:15px;
   border:0;
-  border-radius:10px;
+  border-radius:12px;
   background:#64748b;
   color:white;
+  padding:14px;
   font-size:16px;
   font-weight:bold;
+  margin-top:15px;
 }
 
 .updated{
   text-align:center;
   color:#64748b;
-  font-size:13px;
+  font-size:14px;
   margin-top:12px;
+}
+
+@media(max-width:600px){
+
+  header h1{
+    font-size:30px;
+  }
+
+  .date-title{
+    font-size:23px;
+  }
+
+  .section-title{
+    font-size:24px;
+  }
+
+  .item{
+    font-size:20px;
+  }
+
+  .price-name{
+    font-size:16px;
+  }
+
+  .price{
+    font-size:25px;
+  }
+
 }
 
 </style>
@@ -173,13 +225,13 @@ main{
 
 <main>
 
-<section id="menu">
+<div id="menu">
 
 <div class="loading">
 ⏳ Ładowanie menu…
 </div>
 
-</section>
+</div>
 
 
 <button
@@ -201,7 +253,6 @@ class="updated">
 
 <script>
 
-
 const SHEET_ID =
 "10Dy8W1sR-aZ74gVAgTevIjX28O4VQiD9nIGHz9xF1mM";
 
@@ -214,13 +265,11 @@ document.getElementById("menu");
 const updated =
 document.getElementById("updated");
 
-
 menu.innerHTML =
 '<div class="loading">⏳ Ładowanie menu…</div>';
 
 
 try{
-
 
 const url =
 "https://docs.google.com/spreadsheets/d/" +
@@ -237,7 +286,7 @@ url + "&cache=" + Date.now()
 if(!response.ok){
 
 throw new Error(
-"Nie udało się połączyć z Google Sheets."
+"Nie udało się połączyć z arkuszem."
 );
 
 }
@@ -284,6 +333,8 @@ data.table.rows;
 
 const meals = [];
 
+let lastType = "";
+
 
 rows.forEach(function(row){
 
@@ -303,30 +354,45 @@ return "";
 
 }
 
-
 if(
 cells[index].f !== undefined &&
 cells[index].f !== null
 ){
 
-return String(cells[index].f);
+return String(cells[index].f).trim();
 
 }
 
-
-return String(cells[index].v);
+return String(cells[index].v).trim();
 
 }
 
 
 const date =
-value(0).trim();
+value(0);
 
-const type =
-value(1).trim();
+let type =
+value(1);
 
 const dish =
-value(2).trim();
+value(2);
+
+
+/*
+Jeżeli w arkuszu zostawisz pustą
+kategorię w kolejnych wierszach,
+program automatycznie użyje poprzedniej.
+*/
+
+if(type !== ""){
+
+lastType = type;
+
+}else{
+
+type = lastType;
+
+}
 
 
 if(date && type && dish){
@@ -356,17 +422,14 @@ return;
 }
 
 
-/* =========================================
-   BIERZEMY DATĘ PIERWSZEGO MENU
-   ========================================= */
+/*
+Bierzemy pierwszą datę znajdującą się
+w arkuszu.
+*/
 
 const currentDate =
 meals[0].date;
 
-
-/* =========================================
-   WYBIERAMY POZYCJE Z TEJ DATY
-   ========================================= */
 
 const todayMeals =
 meals.filter(function(meal){
@@ -375,10 +438,6 @@ return meal.date === currentDate;
 
 });
 
-
-/* =========================================
-   PODZIAŁ NA KATEGORIE
-   ========================================= */
 
 const soups =
 todayMeals.filter(function(meal){
@@ -413,37 +472,29 @@ return meal.type
 let html = "";
 
 
-/* =========================================
-   DATA
-   ========================================= */
+/* DATA */
 
 html +=
-
 '<div class="date-title">' +
-'📅 Menu – ' +
-escapeHtml(currentDate) +
+'📅 Dzisiaj – ' +
+escapeHtml(formatDate(currentDate)) +
 '</div>';
 
 
-/* =========================================
-   ZUPY
-   ========================================= */
+/* ZUPY */
 
 if(soups.length > 0){
 
 html +=
-
 '<section class="section">' +
 
 '<div class="section-title">' +
 '🍲 ZUPY' +
 '</div>';
 
-
 soups.forEach(function(meal){
 
 html +=
-
 '<div class="item">' +
 '🥣 ' +
 escapeHtml(meal.dish) +
@@ -451,63 +502,51 @@ escapeHtml(meal.dish) +
 
 });
 
-
 html += '</section>';
 
 }
 
 
-/* =========================================
-   II DANIA
-   ========================================= */
+/* II DANIA */
 
 if(mains.length > 0){
 
 html +=
-
 '<section class="section">' +
 
 '<div class="section-title">' +
 '🍗 II DANIA' +
 '</div>';
 
-
 mains.forEach(function(meal){
 
 html +=
-
 '<div class="item">' +
-'🍽️ ' +
+'🍗 ' +
 escapeHtml(meal.dish) +
 '</div>';
 
 });
-
 
 html += '</section>';
 
 }
 
 
-/* =========================================
-   DODATKI
-   ========================================= */
+/* DODATKI */
 
 if(additions.length > 0){
 
 html +=
-
 '<section class="section">' +
 
 '<div class="section-title">' +
 '🥗 DODATKI' +
 '</div>';
 
-
 additions.forEach(function(meal){
 
 html +=
-
 '<div class="item">' +
 '🥗 ' +
 escapeHtml(meal.dish) +
@@ -515,15 +554,12 @@ escapeHtml(meal.dish) +
 
 });
 
-
 html += '</section>';
 
 }
 
 
-/* =========================================
-   CENNIK
-   ========================================= */
+/* CENNIK */
 
 html +=
 
@@ -533,33 +569,24 @@ html +=
 '💰 CENNIK' +
 '</div>' +
 
+'<div class="prices">' +
 
-'<div class="price-row">' +
-
-'<span>🥣 Zupa</span>' +
-
-'<span class="price">8 zł</span>' +
-
+'<div class="price-column">' +
+'<div class="price-name">🥣 Zupa</div>' +
+'<div class="price">9 zł</div>' +
 '</div>' +
 
-
-'<div class="price-row">' +
-
-'<span>🍗 II danie</span>' +
-
-'<span class="price">22 zł</span>' +
-
+'<div class="price-column">' +
+'<div class="price-name">🍗 II danie</div>' +
+'<div class="price">22 zł</div>' +
 '</div>' +
 
-
-'<div class="price-row">' +
-
-'<span>🍽️ Zestaw</span>' +
-
-'<span class="price">27 zł</span>' +
-
+'<div class="price-column">' +
+'<div class="price-name">🍽️ Zestaw</div>' +
+'<div class="price">27 zł</div>' +
 '</div>' +
 
+'</div>' +
 
 '</section>';
 
@@ -574,7 +601,6 @@ new Date();
 
 updated.textContent =
 "Ostatnia aktualizacja: " +
-
 now.toLocaleTimeString(
 "pl-PL",
 {
@@ -583,13 +609,11 @@ minute:"2-digit"
 }
 );
 
-
 }
+
 catch(error){
 
-
 console.error(error);
-
 
 menu.innerHTML =
 
@@ -603,8 +627,57 @@ escapeHtml(error.message) +
 
 '</div>';
 
+}
 
 }
+
+
+/*
+Formatowanie daty.
+Obsługuje m.in.:
+10
+10 września
+09.09.2026
+*/
+
+function formatDate(value){
+
+const text =
+String(value).trim();
+
+
+const months = [
+
+"stycznia",
+"lutego",
+"marca",
+"kwietnia",
+"maja",
+"czerwca",
+"lipca",
+"sierpnia",
+"września",
+"października",
+"listopada",
+"grudnia"
+
+];
+
+
+if(/^\d{1,2}$/.test(text)){
+
+const day =
+parseInt(text,10);
+
+const month =
+new Date().getMonth();
+
+return day + " " + months[month];
+
+}
+
+
+return text;
 
 }
 
@@ -637,7 +710,6 @@ setInterval(
 loadMenu,
 60000
 );
-
 
 </script>
 
